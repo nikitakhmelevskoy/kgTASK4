@@ -10,9 +10,6 @@ import javax.vecmath.Point2f;
 
 import static com.cgvsu.transformations.Transformations.*;
 
-// TODO: 05.01.2023  TODO: 04.01.2023  cross - векторное произведение - ; sub - вычитание - ; normalize - нормализация - ; -- DONE
-// TODO: 06.01.2023 тяжело понять почему чайник пьяный, проблема в одном из трёх классов рендера, надо разобраться -разобрано, дело в конвейере, в render engine поменял порядок умножения
-
 public class GraphicConveyor {
     private static final float EPS = 1e-5f;
 

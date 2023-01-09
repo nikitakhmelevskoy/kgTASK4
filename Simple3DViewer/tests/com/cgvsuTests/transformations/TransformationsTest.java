@@ -7,7 +7,6 @@ import com.cgvsu.transformations.Transformations;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-// TODO: 08.01.2023 scale - done; translate - done; rotations - ;
 public class TransformationsTest {
     static final float EPS = 1e-5f;
 

@@ -13,7 +13,11 @@ public class Model {
     protected List<Vector3f> normals;
     protected List<Polygon> polygons;
 
-    public Model(final List<Vector3f> vertices, final List<Vector2f> textureVertices, final List<Vector3f> normals, final List<Polygon> polygons) {
+    public Model(
+            final List<Vector3f> vertices,
+            final List<Vector2f> textureVertices,
+            final List<Vector3f> normals,
+            final List<Polygon> polygons) {
         this.vertices = vertices;
         this.textureVertices = textureVertices;
         this.normals = normals;
@@ -75,28 +79,28 @@ public class Model {
             if (vertexIndices.size() != textureVertexIndices.size()
                     && vertexIndices.size() != 0 && textureVertexIndices.size() != 0) {
                 throw new ReaderExceptions.NotDefinedUniformFormatException(
-                        "The unified format for specifying polygon descriptions is not defined."
+                        "Унифицированный формат для указания описаний полигонов не определен."
                 );
             }
 
             if (vertexIndices.size() != normalIndices.size()
                     && vertexIndices.size() != 0 && normalIndices.size() != 0) {
                 throw new ReaderExceptions.NotDefinedUniformFormatException(
-                        "The unified format for specifying polygon descriptions is not defined."
+                        "Унифицированный формат для указания описаний полигонов не определен."
                 );
             }
 
             if (normalIndices.size() != textureVertexIndices.size()
                     && normalIndices.size() != 0 && textureVertexIndices.size() != 0) {
                 throw new ReaderExceptions.NotDefinedUniformFormatException(
-                        "The unified format for specifying polygon descriptions is not defined."
+                        "Унифицированный формат для указания описаний полигонов не определен."
                 );
             }
 
             for (Integer vertexIndex : vertexIndices) {
                 if (vertexIndex >= vertices.size()) {
                     throw new ReaderExceptions.FaceException(
-                            "Polygon description is wrong.", i + 1
+                            "Описание полигона неверно.", i + 1
                     );
                 }
             }
@@ -104,7 +108,7 @@ public class Model {
             for (Integer textureVertexIndex : textureVertexIndices) {
                 if (textureVertexIndex >= textureVertices.size()) {
                     throw new ReaderExceptions.FaceException(
-                            "Polygon description is wrong.", i + 1
+                            "Описание полигона неверно.", i + 1
                     );
                 }
             }
@@ -112,7 +116,7 @@ public class Model {
             for (Integer normalIndex : normalIndices) {
                 if (normalIndex >= normals.size()) {
                     throw new ReaderExceptions.FaceException(
-                            "Polygon description is wrong.", i + 1
+                            "Описание полигона неверно.", i + 1
                     );
                 }
             }

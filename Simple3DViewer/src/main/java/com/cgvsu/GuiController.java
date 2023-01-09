@@ -134,7 +134,6 @@ public class GuiController {
             String fileContent = Files.readString(fileName);
             ModelOnScene model = new ModelOnScene(ObjReader.read(fileContent, false));
             scene.modelsList.add(model);
-            // todo: обработка ошибок
         } catch (IOException exception) {
         }
     }
