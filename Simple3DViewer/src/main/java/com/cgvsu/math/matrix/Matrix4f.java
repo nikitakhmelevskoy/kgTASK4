@@ -40,7 +40,7 @@ public class Matrix4f extends Matrix {
         return new Matrix4f(new float[length]);
     }
 
-    public Matrix createIdentityMatrix(final float value) {
+    public Matrix createSingleMatrix(final float value) {
         Matrix4f matrix = new Matrix4f(new float[size * size]);
 
         int indexMainDiagonal = 0;
@@ -56,8 +56,8 @@ public class Matrix4f extends Matrix {
     }
 
     @Override
-    public Matrix createIdentityMatrix() {
-        return createIdentityMatrix(1);
+    public Matrix createSingleMatrix() {
+        return createSingleMatrix(1);
     }
 
     // раскладывает матрицу 4х4 по первой строке на 4 матрицы размера 3х3, затем для каждой матрицы вызывает

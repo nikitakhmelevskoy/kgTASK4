@@ -160,7 +160,7 @@ public abstract class Vector {
         return sumWithConstant(-constant);
     }
 
-    public Vector multiplicateVectorOnConstant(final float constant) {
+    public Vector multiplyVectorOnConstant(final float constant) {
         for (int index = 0; index < this.getSize(); index++) {
             this.getVector()[index] *= constant;
         }
@@ -174,7 +174,7 @@ public abstract class Vector {
             throw new VectorException("Division by zero");
         }
 
-        return multiplicateVectorOnConstant((1.0f / constant));
+        return multiplyVectorOnConstant((1.0f / constant));
     }
 
     public float getVectorLength() {
@@ -207,7 +207,7 @@ public abstract class Vector {
         return dotProduct(this, vector);
     }
 
-    public void swapElements(final int index, final int changingIndex) {
+    public void changeElements(final int index, final int changingIndex) {
         float changingValue = this.get(index);
         this.set(index, this.get(changingIndex));
         this.set(changingIndex, changingValue);

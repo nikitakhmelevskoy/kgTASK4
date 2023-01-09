@@ -13,31 +13,31 @@ public class TransformationsTest {
 
     @Test
     public void setScaleMatrix01() {
-        Matrix4f scaledMatrix = (Matrix4f) new Matrix4f().createIdentityMatrix();
-        Matrix4f identityMatrix = (Matrix4f) new Matrix4f().createIdentityMatrix();
+        Matrix4f scaledMatrix = (Matrix4f) new Matrix4f().createSingleMatrix();
+        Matrix4f SingleMatrix = (Matrix4f) new Matrix4f().createSingleMatrix();
         Transformations.setScaleMatrix(scaledMatrix, new Vector3f(1, 1, 1));
-        Assertions.assertTrue(scaledMatrix.isEqualMatrix(identityMatrix));
+        Assertions.assertTrue(scaledMatrix.isEqualMatrix(SingleMatrix));
     }
 
     @Test
     public void setScaleMatrix02() {
-        Matrix4f scaledMatrix = (Matrix4f) new Matrix4f().createIdentityMatrix();
-        Matrix4f identityMatrix = (Matrix4f) new Matrix4f().createIdentityMatrix();
+        Matrix4f scaledMatrix = (Matrix4f) new Matrix4f().createSingleMatrix();
+        Matrix4f SingleMatrix = (Matrix4f) new Matrix4f().createSingleMatrix();
         Transformations.setScaleMatrix(scaledMatrix, new Vector3f(1e-4f, 1e-4f, 1e-4f));
-        Assertions.assertFalse(scaledMatrix.isEqualMatrix(identityMatrix));
+        Assertions.assertFalse(scaledMatrix.isEqualMatrix(SingleMatrix));
     }
 
     @Test
     public void setScaleMatrix03() {
-        Matrix4f scaledMatrix = (Matrix4f) new Matrix4f().createIdentityMatrix();
-        Matrix4f identityMatrix = (Matrix4f) new Matrix4f().createIdentityMatrix();
+        Matrix4f scaledMatrix = (Matrix4f) new Matrix4f().createSingleMatrix();
+        Matrix4f SingleMatrix = (Matrix4f) new Matrix4f().createSingleMatrix();
         Transformations.setScaleMatrix(scaledMatrix, new Vector3f(7, 5, 3));
-        Assertions.assertFalse(scaledMatrix.isEqualMatrix(identityMatrix));
+        Assertions.assertFalse(scaledMatrix.isEqualMatrix(SingleMatrix));
     }
 
     @Test
     public void setScaleMatrix04() {
-        Matrix4f scaledMatrix = (Matrix4f) new Matrix4f().createIdentityMatrix();
+        Matrix4f scaledMatrix = (Matrix4f) new Matrix4f().createSingleMatrix();
         Matrix4f expectedMatrix = new Matrix4f(new float[]{-7, 0, 0, 0, 0, -5, 0, 0, 0, 0, -3, 0, 0, 0, 0, 1});
         Transformations.setScaleMatrix(scaledMatrix, new Vector3f(-7, -5, -3));
         Assertions.assertTrue(scaledMatrix.isEqualMatrix(expectedMatrix));
@@ -45,7 +45,7 @@ public class TransformationsTest {
 
     @Test
     public void addTranslation01() {
-        Matrix4f translatedMatrix = (Matrix4f) new Matrix4f().createIdentityMatrix();
+        Matrix4f translatedMatrix = (Matrix4f) new Matrix4f().createSingleMatrix();
         Transformations.addTranslate(translatedMatrix, new Vector3f(new float[]{2, 2, 2}));
         Matrix4f expectedMatrix = new Matrix4f(new float[]{1, 0, 0, 2, 0, 1, 0, 2, 0, 0, 1, 2, 0, 0, 0, 1});
         Assertions.assertTrue(translatedMatrix.isEqualMatrix(expectedMatrix));
@@ -53,7 +53,7 @@ public class TransformationsTest {
 
     @Test
     public void addTranslation02() {
-        Matrix4f translatedMatrix = (Matrix4f) new Matrix4f().createIdentityMatrix();
+        Matrix4f translatedMatrix = (Matrix4f) new Matrix4f().createSingleMatrix();
         Transformations.addTranslate(translatedMatrix, new Vector3f(new float[]{0, 0, 0}));
         Matrix4f expectedMatrix = new Matrix4f(new float[]{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1});
         Assertions.assertTrue(translatedMatrix.isEqualMatrix(expectedMatrix));
@@ -61,7 +61,7 @@ public class TransformationsTest {
 
     @Test
     public void addTranslation03() {
-        Matrix4f translatedMatrix = (Matrix4f) new Matrix4f().createIdentityMatrix();
+        Matrix4f translatedMatrix = (Matrix4f) new Matrix4f().createSingleMatrix();
         Transformations.addTranslate(translatedMatrix, new Vector3f(new float[]{-9, 0, 9}));
         Matrix4f expectedMatrix = new Matrix4f(new float[]{1, 0, 0, -9, 0, 1, 0, 0, 0, 0, 9, 1, 0, 0, 0, 1});
         Assertions.assertTrue(translatedMatrix.isEqualMatrix(expectedMatrix));

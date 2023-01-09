@@ -18,18 +18,18 @@ public class Transformations {
     }
 
     public static Matrix getRotateMatrix(Vector3f rotateVector) throws Matrix.MatrixException {
-        Matrix4f matrix4f = (Matrix4f) new Matrix4f().createIdentityMatrix();
+        Matrix4f matrix4f = (Matrix4f) new Matrix4f().createSingleMatrix();
 
         if (Math.abs(rotateVector.get(0)) > EPS) {
-            matrix4f = (Matrix4f) Matrix4f.multiplicateMatrices(getXRotationMatrix(rotateVector.get(0)), matrix4f);
+            matrix4f = (Matrix4f) Matrix4f.multiplyMatrices(getXRotationMatrix(rotateVector.get(0)), matrix4f);
         }
 
         if (Math.abs(rotateVector.get(1)) > EPS) {
-            matrix4f = (Matrix4f) Matrix4f.multiplicateMatrices(getYRotationMatrix(rotateVector.get(1)), matrix4f);
+            matrix4f = (Matrix4f) Matrix4f.multiplyMatrices(getYRotationMatrix(rotateVector.get(1)), matrix4f);
         }
 
         if (Math.abs(rotateVector.get(2)) > EPS) {
-            matrix4f = (Matrix4f) Matrix4f.multiplicateMatrices(getZRotationMatrix(rotateVector.get(2)), matrix4f);
+            matrix4f = (Matrix4f) Matrix4f.multiplyMatrices(getZRotationMatrix(rotateVector.get(2)), matrix4f);
         }
 
         return matrix4f;

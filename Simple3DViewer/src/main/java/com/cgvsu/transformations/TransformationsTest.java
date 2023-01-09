@@ -11,10 +11,10 @@ public class TransformationsTest {
     @Test
     public void setScaleMatrix() {
         Matrix4f scaledMatrix = new Matrix4f();
-        scaledMatrix.createIdentityMatrix();
-        Matrix4f identityMatrix = new Matrix4f();
-        identityMatrix.createIdentityMatrix();
+        scaledMatrix.createSingleMatrix();
+        Matrix4f SingleMatrix = new Matrix4f();
+        SingleMatrix.createSingleMatrix();
         Transformations.setScaleMatrix(scaledMatrix, new Vector3f(1, 1, 1));
-        Assertions.assertThat(scaledMatrix.isEqualMatrix(identityMatrix));
+        Assertions.assertThat(scaledMatrix.isEqualMatrix(SingleMatrix));
     }
 }

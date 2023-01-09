@@ -18,9 +18,9 @@ public class GraphicConveyor {
 
     public static Matrix4f rotateScaleTranslate(Vector3f rotateVector, Vector3f scaleVector, Vector3f translateVector)
             throws Matrix.MatrixException {
-        Matrix4f matrix4f = (Matrix4f) new Matrix4f().createIdentityMatrix();
+        Matrix4f matrix4f = (Matrix4f) new Matrix4f().createSingleMatrix();
         setScaleMatrix(matrix4f, scaleVector);
-        matrix4f = (Matrix4f) Matrix4f.multiplicateMatrices(getRotateMatrix(rotateVector), matrix4f);
+        matrix4f = (Matrix4f) Matrix4f.multiplyMatrices(getRotateMatrix(rotateVector), matrix4f);
         addTranslate(matrix4f, translateVector);
         return matrix4f;
     }
@@ -69,7 +69,7 @@ public class GraphicConveyor {
     public static Vector3f multiplyMatrix4ByVector3(final Matrix4f matrix, final Vector3f vertex)
             throws Matrix.MatrixException {
         Vector4f newVector = new Vector4f(new float[]{vertex.getX(), vertex.getY(), vertex.getZ(), 1});
-        Vector4f resultVector = (Vector4f) matrix.multiplicateOnVector(newVector);
+        Vector4f resultVector = (Vector4f) matrix.multiplyOnVector(newVector);
         return new Vector3f(
                 resultVector.getX() / resultVector.get(3),
                 resultVector.getY() / resultVector.get(3),

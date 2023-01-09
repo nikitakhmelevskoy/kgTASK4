@@ -86,16 +86,16 @@ public class VectorTest {
     @Test
     public void multiplicateVectorOnConstant() {
         Vector2f vector2f = new Vector2f(new float[]{3, 4});
-        Assertions.assertThat(vector2f.multiplicateVectorOnConstant(0).getVector()).
+        Assertions.assertThat(vector2f.multiplyVectorOnConstant(0).getVector()).
                 isEqualTo(new float[]{0, 0});
 
         Vector3f vector3f = new Vector3f(new float[]{2, 3, 4});
         Vector3f resultVector = new Vector3f(new float[]{4.8f, 7.2f, 9.6f});
-        Assertions.assertThat(vector3f.multiplicateVectorOnConstant(2.4f).isEqual(resultVector)).
+        Assertions.assertThat(vector3f.multiplyVectorOnConstant(2.4f).isEqual(resultVector)).
                 isEqualTo(true);
 
         Vector4f vector4f = new Vector4f(new float[]{-4, 3, 4, -5});
-        Assertions.assertThat(vector4f.multiplicateVectorOnConstant(-3).getVector()).
+        Assertions.assertThat(vector4f.multiplyVectorOnConstant(-3).getVector()).
                 isEqualTo(new float[]{12, -9, -12, 15});
     }
 

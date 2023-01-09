@@ -41,7 +41,7 @@ public class Matrix3f extends Matrix {
     }
 
     @Override
-    public Matrix createIdentityMatrix(final float value) {
+    public Matrix createSingleMatrix(final float value) {
         Matrix3f matrix = new Matrix3f(new float[size * size]);
         int indexMainDiagonal = 0;
 
@@ -56,8 +56,8 @@ public class Matrix3f extends Matrix {
     }
 
     @Override
-    public Matrix createIdentityMatrix() {
-        return createIdentityMatrix(1.0f);
+    public Matrix createSingleMatrix() {
+        return createSingleMatrix(1.0f);
     }
 
 

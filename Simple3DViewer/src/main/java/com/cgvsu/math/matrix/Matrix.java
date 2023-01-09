@@ -3,7 +3,6 @@ package com.cgvsu.math.matrix;
 import com.cgvsu.math.vector.Vector;
 
 public abstract class Matrix {
-
     public static class MatrixException extends Exception {
         public MatrixException(String message) {
             super(message);
@@ -14,7 +13,6 @@ public abstract class Matrix {
     protected final int length;
     protected float[] vector;
     static final float EPS = 1e-6f;
-
 
     public Matrix(float[] vector, final int size) {
         if (vector.length == size * size) {
@@ -54,6 +52,7 @@ public abstract class Matrix {
         } catch (IndexOutOfBoundsException e) {
             throw new RuntimeException(e);
         }
+        
         return element;
     }
 
@@ -92,7 +91,7 @@ public abstract class Matrix {
     }
 
     // проверяет, является ли матрица единичной
-    public static boolean isIdentityMatrix(final Matrix matrix, final float eps) {
+    public static boolean isSingleMatrix(final Matrix matrix, final float eps) {
         float firstElement = matrix.get(0);
         int indexMainDiagonal = 0;
 
@@ -115,9 +114,9 @@ public abstract class Matrix {
         return true;
     }
 
-    public abstract Matrix createIdentityMatrix(final float value);
+    public abstract Matrix createSingleMatrix(final float value);
 
-    public abstract Matrix createIdentityMatrix();
+    public abstract Matrix createSingleMatrix();
 
     public abstract Matrix getZeroMatrix(final int size);
 
@@ -133,7 +132,7 @@ public abstract class Matrix {
             indexRow = index;
 
             while (indexCol < size) {
-                matrix.swapElements(indexRow * size + indexCol, indexCol * size + indexRow);
+                matrix.changeElements(indexRow * size + indexCol, indexCol * size + indexRow);
                 indexCol++;
             }
         }
@@ -170,7 +169,7 @@ public abstract class Matrix {
         return matrix;
     }
 
-    public void multiplicateOnValue(final float value) {
+    public void multiplyOnValue(final float value) {
         for (int index = 0; index < this.getLength(); index++) {
             this.set(index, this.get(index) * value);
         }
@@ -181,12 +180,12 @@ public abstract class Matrix {
             throw new Matrix.MatrixException("Division by zero");
         }
 
-        multiplicateOnValue(1.0f / value);
+        multiplyOnValue(1.0f / value);
     }
 
-    public Vector multiplicateOnVector(final Vector vector) throws MatrixException {
+    public Vector multiplyOnVector(final Vector vector) throws MatrixException {
         if (this.getSize() != vector.getSize()) {
-            throw new MatrixException("Different sizes can't be multiplicated");
+            throw new MatrixException("Different sizes can't be multiplyd");
         }
 
         Vector result = vector.getZeroVector(size);
@@ -205,9 +204,9 @@ public abstract class Matrix {
         return result;
     }
 
-    public static Matrix multiplicateMatrices(final Matrix matrix1, final Matrix matrix2) throws MatrixException {
+    public static Matrix multiplyMatrices(final Matrix matrix1, final Matrix matrix2) throws MatrixException {
         if (!matrix1.isEqualSize(matrix2)) {
-            throw new MatrixException("Different sizes can't be multiplicated");
+            throw new MatrixException("Different sizes can't be multiplyd");
         }
 
         Matrix matrix = matrix1.getZeroMatrix(matrix1.getSize());
@@ -231,15 +230,15 @@ public abstract class Matrix {
 
     // реализует поиск детерминанта
     public float getDeterminant() {
-        final float detCoeff = this.getTriangleMatrix();
+        final float detRatio = this.getTriangleMatrix();
         float determinant = 1;
 
         for (int index = 0; index < size; index++) {
             determinant *= this.get(index * size + index);
         }
 
-        if (detCoeff != 0) {
-            determinant /= detCoeff;
+        if (detRatio != 0) {
+            determinant /= detRatio;
         } else {
             determinant = 0;
         }
@@ -251,69 +250,69 @@ public abstract class Matrix {
     private float getTriangleMatrix() {
         int indexCol = 0;
         int changingIndexRow = 0;
-        float detCoeff = 1;
+        float detRatio = 1;
 
         for (int index = 0; index < size - 1; index++) {
             indexCol = 0;
-            changingIndexRow = this.getSwapIndexRow(index);
+            changingIndexRow = this.getChangedIndexRow(index);
 
             if (changingIndexRow == -2) {
-                detCoeff = 0;
+                detRatio = 0;
                 continue;
             } else if (changingIndexRow != -1) {
                 while (indexCol < size) {
-                    this.swapElements(index * size + indexCol, changingIndexRow * size + indexCol);
+                    this.changeElements(index * size + indexCol, changingIndexRow * size + indexCol);
                     indexCol++;
                 }
 
-                detCoeff *= -1;
+                detRatio *= -1;
             }
 
-            detCoeff *= this.getZeroCol(index);
+            detRatio *= this.getZeroCol(index);
         }
 
-        return detCoeff;
+        return detRatio;
     }
 
     // преобразует исходную матрицу путём обнуления столбца по элементу с переданным индексом
     private float getZeroCol(final int index) {
         int indexNextRow = index + 1;
-        float coeff, coeffNextRow, coeffActualRow = this.get(index * size + index);
-        float detCoeff = 1;
+        float ratio, ratioNextRow, ratioActualRow = this.get(index * size + index);
+        float detRatio = 1;
 
         while (indexNextRow < size) {
-            coeff = getCoeff(this.get(indexNextRow * size + index), this.get(index * size + index));
-            coeffNextRow = this.get(indexNextRow * size + index);
+            ratio = getRatio(this.get(indexNextRow * size + index), this.get(index * size + index));
+            ratioNextRow = this.get(indexNextRow * size + index);
 
-            if (coeff % 1 != 0) {
-                this.multiplicateOnCoeff(coeffNextRow, coeffActualRow, index, indexNextRow, 0);
-                detCoeff *= coeffActualRow;
+            if (ratio % 1 != 0) {
+                this.multiplyOnRatio(ratioNextRow, ratioActualRow, index, indexNextRow, 0);
+                detRatio *= ratioActualRow;
             } else {
-                this.multiplicateOnCoeff(coeff, 1, index, indexNextRow, 0);
+                this.multiplyOnRatio(ratio, 1, index, indexNextRow, 0);
             }
 
             indexNextRow++;
         }
 
-        return detCoeff;
+        return detRatio;
     }
 
     // преобразует строку
-    private void multiplicateOnCoeff(
-            final float coeffNextRow, final float coeffActualRow,
+    private void multiplyOnRatio(
+            final float ratioNextRow, final float ratioActualRow,
             final int index, final int indexRow, int indexCol) {
 
         while (indexCol < size) {
             int actualIndex = indexRow * size + indexCol;
             int prevIndex = index * size + indexCol;
 
-            this.getVector()[actualIndex] = this.get(actualIndex) * coeffActualRow -
-                    this.get(prevIndex) * coeffNextRow;
+            this.getVector()[actualIndex] = this.get(actualIndex) * ratioActualRow -
+                    this.get(prevIndex) * ratioNextRow;
             indexCol++;
         }
     }
 
-    private int getSwapIndexRow(final int index) {
+    private int getChangedIndexRow(final int index) {
         int changingIndexRow = -1;
         int actualIndex = index * size + index;
         float minValue = Math.abs(this.get(actualIndex));
@@ -334,38 +333,38 @@ public abstract class Matrix {
 
     // Метод получения обратной матрицы. Изначальную матрицу умножает на единичную, затем превращает изначальную
     // матрицу в треугольную с параллельным преобразованием единичной, затем вызывает обратный ход метода
-    public static Matrix getInverseMatrix(final Matrix matrix) throws MatrixException {
-        Matrix unitMatrix = matrix.createIdentityMatrix();
-        float coeff, coeffNextRow, coeffActualRow;
+    public static Matrix getInvertedMatrix(final Matrix matrix) throws MatrixException {
+        Matrix unitMatrix = matrix.createSingleMatrix();
+        float ratio, ratioNextRow, ratioActualRow;
         int indexCol, indexRow, changingIndexRow;
         int size = matrix.getSize();
 
         for (int index = 0; index < size - 1; index++) {
             indexCol = index;
             indexRow = index + 1;
+            changingIndexRow = matrix.getChangedIndexRow(index);
 
-            changingIndexRow = matrix.getSwapIndexRow(index);
             if (changingIndexRow == -2) {
                 throw new MatrixException("Matrix hasn't inverse matrix");
             } else if (changingIndexRow != -1) {
                 while (indexCol < size) {
-                    matrix.swapElements(index * size + indexCol, changingIndexRow * size + indexCol);
+                    matrix.changeElements(index * size + indexCol, changingIndexRow * size + indexCol);
                     indexCol++;
                 }
             }
 
-            coeffActualRow = matrix.get(index * size + index);
+            ratioActualRow = matrix.get(index * size + index);
 
             while (indexRow < size) {
-                coeff = getCoeff(matrix.get(indexRow * size + index), matrix.get(index * size + index));
-                coeffNextRow = matrix.get(indexRow * size + index);
+                ratio = getRatio(matrix.get(indexRow * size + index), matrix.get(index * size + index));
+                ratioNextRow = matrix.get(indexRow * size + index);
 
-                if (coeff % 1 != 0) {
-                    matrix.multiplicateOnCoeff(coeffNextRow, coeffActualRow, index, indexRow, 0);
-                    unitMatrix.multiplicateOnCoeff(coeffNextRow, coeffActualRow, index, indexRow, 0);
+                if (ratio % 1 != 0) {
+                    matrix.multiplyOnRatio(ratioNextRow, ratioActualRow, index, indexRow, 0);
+                    unitMatrix.multiplyOnRatio(ratioNextRow, ratioActualRow, index, indexRow, 0);
                 } else {
-                    matrix.multiplicateOnCoeff(coeff, 1, index, indexRow, 0);
-                    unitMatrix.multiplicateOnCoeff(coeff, 1, index, indexRow, 0);
+                    matrix.multiplyOnRatio(ratio, 1, index, indexRow, 0);
+                    unitMatrix.multiplyOnRatio(ratio, 1, index, indexRow, 0);
                 }
 
                 indexRow++;
@@ -379,26 +378,26 @@ public abstract class Matrix {
     private static Matrix reversePassOfInverseMatrixMethod(final Matrix matrix, final Matrix unitMatrix) {
         int indexRow, indexCol;
         int size = matrix.getSize();
-        float coeff;
+        float ratio;
 
         for (int index = matrix.getSize() - 1; index >= 0; index--) {
             indexRow = index - 1;
             indexCol = 0;
-            coeff = getCoeff(1, matrix.get(index * size + index));
+            ratio = getRatio(1, matrix.get(index * size + index));
 
-            while (coeff != 1 && indexCol < size) {
-                matrix.getVector()[index * size + indexCol] *= coeff;
-                unitMatrix.getVector()[index * size + indexCol] *= coeff;
+            while (ratio != 1 && indexCol < size) {
+                matrix.getVector()[index * size + indexCol] *= ratio;
+                unitMatrix.getVector()[index * size + indexCol] *= ratio;
                 indexCol++;
             }
 
             while (indexRow >= 0) {
                 indexCol = 0;
-                coeff = getCoeff(matrix.get(indexRow * size + index), matrix.get(index * size + index));
-                matrix.getVector()[indexRow * size + index] -= coeff;
+                ratio = getRatio(matrix.get(indexRow * size + index), matrix.get(index * size + index));
+                matrix.getVector()[indexRow * size + index] -= ratio;
 
                 while (indexCol < matrix.getSize()) {
-                    unitMatrix.getVector()[indexRow * size + indexCol] -= unitMatrix.get(index * size + indexCol) * coeff;
+                    unitMatrix.getVector()[indexRow * size + indexCol] -= unitMatrix.get(index * size + indexCol) * ratio;
                     indexCol++;
                 }
 
@@ -409,46 +408,46 @@ public abstract class Matrix {
         return unitMatrix;
     }
 
-    private void swapElements(final int index, final int changingIndex) {
+    private void changeElements(final int index, final int changingIndex) {
         final float changingValue = this.get(index);
         this.getVector()[index] = this.get(changingIndex);
         this.getVector()[changingIndex] = changingValue;
     }
 
     // решает систему линейных уравнений методом Гаусса
-    public static Vector solutionByGaussMethod(final Matrix matrix, final Vector vector) throws MatrixException {
-        float coeff, coeffNextRow, coeffActualRow;
+    public static Vector solveByGaussMethod(final Matrix matrix, final Vector vector) throws MatrixException {
+        float ratio, ratioNextRow, ratioActualRow;
         int indexCol, indexRow, changingIndexRow;
         int size = matrix.getSize();
 
         for (int index = 0; index < size - 1; index++) {
             indexCol = index;
             indexRow = index + 1;
-            changingIndexRow = matrix.getSwapIndexRow(index);
+            changingIndexRow = matrix.getChangedIndexRow(index);
 
             if (changingIndexRow == -2) {
                 continue;
             } else if (changingIndexRow != -1) {
                 while (indexCol < size) {
-                    matrix.swapElements(index * size + indexCol, changingIndexRow * size + indexCol);
+                    matrix.changeElements(index * size + indexCol, changingIndexRow * size + indexCol);
                     indexCol++;
                 }
 
-                vector.swapElements(index, changingIndexRow);
+                vector.changeElements(index, changingIndexRow);
             }
 
             while (indexRow < size) {
-                coeff = getCoeff(matrix.get(indexRow * size + index), matrix.get(index * size + index));
-                coeffNextRow = matrix.get(indexRow * size + index);
-                coeffActualRow = matrix.get(index * size + index);
+                ratio = getRatio(matrix.get(indexRow * size + index), matrix.get(index * size + index));
+                ratioNextRow = matrix.get(indexRow * size + index);
+                ratioActualRow = matrix.get(index * size + index);
 
-                if (coeff % 1 == 0) {
-                    matrix.multiplicateOnCoeff(coeff, 1, index, indexRow, index);
-                    vector.getVector()[indexRow] = vector.get(indexRow) - vector.get(index) * coeff;
+                if (ratio % 1 == 0) {
+                    matrix.multiplyOnRatio(ratio, 1, index, indexRow, index);
+                    vector.getVector()[indexRow] = vector.get(indexRow) - vector.get(index) * ratio;
                 } else {
-                    matrix.multiplicateOnCoeff(coeffNextRow, coeffActualRow, index, indexRow, index);
-                    vector.getVector()[indexRow] = vector.get(indexRow) * coeffActualRow -
-                            vector.get(index) * coeffNextRow;
+                    matrix.multiplyOnRatio(ratioNextRow, ratioActualRow, index, indexRow, index);
+                    vector.getVector()[indexRow] = vector.get(indexRow) * ratioActualRow -
+                            vector.get(index) * ratioNextRow;
 
                 }
 
@@ -461,7 +460,7 @@ public abstract class Matrix {
 
     // обратный ход метода Гаусса
     private static Vector reversePassOfGaussMethod(final Matrix matrix, final Vector vector) throws MatrixException {
-        Vector solutionVector = vector.getZeroVector(vector.getSize());
+        Vector solveVector = vector.getZeroVector(vector.getSize());
         int indexCol;
         int size = matrix.getSize();
         float sum, matrixValue, vectorValue;
@@ -472,26 +471,26 @@ public abstract class Matrix {
 
             while (indexCol > index) {
                 matrixValue = matrix.get(index * size + indexCol);
-                vectorValue = solutionVector.get(indexCol);
+                vectorValue = solveVector.get(indexCol);
                 sum += matrixValue * vectorValue;
                 indexCol--;
             }
 
             if (matrix.get(index * size + index) == 0 && ((sum == 0 && vector.get(index) != 0)
                     || (sum != 0 && vector.get(index) == 0))) {
-                throw new MatrixException("There are no solutions");
+                throw new MatrixException("There are no solves");
             } else if (matrix.get(index * size + index) == 0) {
-                solutionVector.set(index, 1);
+                solveVector.set(index, 1);
                 continue;
             }
 
-            solutionVector.getVector()[index] = (vector.get(index) - sum) / matrix.get(index * size + index);
+            solveVector.getVector()[index] = (vector.get(index) - sum) / matrix.get(index * size + index);
         }
 
-        return solutionVector;
+        return solveVector;
     }
 
-    private static float getCoeff(final float value1, final float value2) {
+    private static float getRatio(final float value1, final float value2) {
         if (Math.abs(value2) < EPS) {
             throw new ArithmeticException("Division by zero");
         }

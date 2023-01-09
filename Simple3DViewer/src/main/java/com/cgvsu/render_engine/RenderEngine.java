@@ -25,9 +25,9 @@ public class RenderEngine {
         Matrix4f viewMatrix = camera.getViewMatrix();
         Matrix4f projectionMatrix = camera.getProjectionMatrix();
 
-        Matrix4f modelViewProjectionMatrix = new Matrix4f(modelMatrix); // поменять порядок - Done
-        modelViewProjectionMatrix = (Matrix4f) Matrix.multiplicateMatrices(viewMatrix, modelViewProjectionMatrix);
-        modelViewProjectionMatrix = (Matrix4f) Matrix.multiplicateMatrices(projectionMatrix, modelViewProjectionMatrix);
+        Matrix4f modelViewProjectionMatrix = new Matrix4f(modelMatrix);
+        modelViewProjectionMatrix = (Matrix4f) Matrix.multiplyMatrices(viewMatrix, modelViewProjectionMatrix);
+        modelViewProjectionMatrix = (Matrix4f) Matrix.multiplyMatrices(projectionMatrix, modelViewProjectionMatrix);
 
         final int nPolygons = mesh.getPolygons().size();
 
