@@ -5,9 +5,9 @@
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="anchorPane" style="-fx-background-color: #e6e6fa;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cgvsu.GuiController">
+<AnchorPane fx:id="anchorPane" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cgvsu.GuiController">
 
-    <MenuBar layoutY="2.0" style="-fx-background-color: #f0f8ff;">
+    <MenuBar layoutY="2.0">
         <Menu mnemonicParsing="false" text="Файл">
             <MenuItem mnemonicParsing="false" onAction="#onSaveModelMenuItemClick" text="Сохранить модель">
             <accelerator>
